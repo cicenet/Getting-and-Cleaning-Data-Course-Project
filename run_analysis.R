@@ -35,7 +35,7 @@ df_combined_HC<-rbind.data.frame(df_test_HC,df_train_HC) #Binding columns of tho
 
 #####  Second Assignment   
 ##### Extracts only the measurements on the mean and standard deviation for each measurement. 
-df_extracted_mean_std<-df_combined_HC[grepl("Subject| Activity | mean\\(\\)| std\\(\\)",names(df_combined_HC)), ] 
+df_extracted_mean_std<-df_combined_HC[grepl("Subject| Activity |*mean*| *std*",names(df_combined_HC)), ] 
 # Extracting columns of means and standard deviations
 
 
@@ -50,7 +50,6 @@ for (i in 1:nrow(df_activities)) {
   df_extracted_mean_std$ActivityDescription[df_extracted_mean_std$Activity==i]<-as.character(df_activities[i,2])
   # Assigning name activity according with number
 }
-
 
 #####  Fourth Assignment   #####  
 #####  Appropriately labels the data set with descriptive variable names.
@@ -69,7 +68,7 @@ df_extracted_mean_std$ActivityDescription <-as.factor(df_extracted_mean_std$Acti
 df_extracted_mean_std$Subject <-as.factor(df_extracted_mean_std$Subject) #Converting a column to factor 
 
 V_id_vars <-c("ActivityDescription","Subject") # Defining Id variables that would be melted
-v_measured_var <- names(df_combined_HC)[2:563] # Defining measures  that would be melted
+v_measured_var <- names(df_extracted_mean_std)[2:80] # Defining measures  that would be melted
 df_melted_HC <-melt(df_extracted_mean_std,V_id_vars,measure.vars=v_measured_var) #Creating a data frame with combination of id var and measure melted
 df_tidy <-dcast(df_melted_HC,ActivityDescription + Subject ~ variable, mean)
 write.table(df_tidy,"Tidy.txt" , row.names = FALSE) # writing result on a external file
